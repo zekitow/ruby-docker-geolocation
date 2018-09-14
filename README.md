@@ -11,7 +11,7 @@ To make the setup easier to run:
 
 ```sh
 # Clone the repository
-git clone <git-url> ruby-docker-geolocation
+git clone git@github.com:zekitow/ruby-docker-geolocation.git ruby-docker-geolocation
 cd ruby-docker-geolocation
 
 # Build the docker (only needed for the first run)
@@ -69,11 +69,11 @@ Expected return:
     "house_number" : "31", 
     "street" : "Marienburger Straße", 
     "city" : "Berlin", 
-    "zip_code" : "10405
+    "zip_code" : "10405",
     "state" : "Berlin",
-    "lat" : '13.4211476',
-    "lng" : '52.534993',
-    "price" : '350000'
+    "lat" : "13.4211476",
+    "lng" : "52.534993",
+    "price" : "350000"
 
   },
   {
@@ -81,13 +81,13 @@ Expected return:
     "house_number" : "16", 
     "street" : "Winsstraße", 
     "city" : "Berlin", 
-    "zip_code" : "10405"
+    "zip_code" : "10405",
     "state" : "Berlin",
-    "lat" : '52.533533',
-    "lng" : '13.425226',
-    "price" : '320400'
+    "lat" : "52.533533",
+    "lng" : "13.425226",
+    "price" : "320400"
 
   }
- # ... other properties 
+  ... 
 ]
 ```

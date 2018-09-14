@@ -88,6 +88,5 @@ Expected return:
     "price" : "320400"
 
   }
-  ... 
 ]
 ```

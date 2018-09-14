@@ -1,5 +1,24 @@
 # Ruby Geolocation
 
+## Pre-Setup
+
+**Important**
+
+Before clone the project, you should setup your host machine to [encrease virtual memory for ElasticSearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html):
+
+Create the file **/etc/sysctl.d/60-elasticsearch.conf** with the following content:
+
+```
+vm.max_map_count=262144
+```
+
+This file will prevent you to change the virtual memory size everytime you reboot your machine.
+To change the **max_map_count** now, run the command on terminal.
+
+```
+sudo sysctl -w vm.max_map_count=262144
+```
+
 ## Setup
 
 1. Clone this repository

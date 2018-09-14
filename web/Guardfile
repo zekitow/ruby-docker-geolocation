@@ -1,0 +1,12 @@
+guard :rspec, cmd: 'bundle exec rspec' do
+  watch('spec/spec_helper.rb')                        { "spec" }
+  watch('config/*.rb')                                { "spec" }
+  watch('app/controllers/application_controller.rb')  { "spec/controllers" }
+  watch(%r{^spec/.+_spec\.rb$})
+  watch(%r{^app/(.+)\.rb$})                           { |m| "spec/#{m[1]}_spec.rb" }
+  watch(%r{^app/(.*)(\.erb|\.haml|\.slim)$})          { |m| "spec/#{m[1]}#{m[2]}_spec.rb" }
+  watch(%r{^lib/(.+)\.rb$})                           { |m| "spec/lib/#{m[1]}_spec.rb" }
+  watch('spec/fixtures/players/players.json')         { |m| "spec/services/players_service_spec.rb" }
+  watch('spec/fixtures/teams/teams.json')             { |m| "spec/services/teams_service_spec.rb" }
+  watch('spec/fixtures/vacancies/vacancies.json')     { |m| "spec/services/vacancies_service_spec.rb" }
+end

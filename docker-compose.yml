@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  db:
+    image: sintra_docker/psql
+    ports:
+     - 5432:5432
+    build:
+      context: ./psql
+    volumes:
+      - ./psql/data:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: ruby_geolocation_${RACK_ENV}
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+    restart: always
+
+  ruby:
+    image: sintra_docker/ruby
+    environment:
+      MS_UID: ${UID}
+      MS_GID: ${UID}
+      RACK_ENV: ${RACK_ENV}
+      APP_HOME: /web
+    build: 
+      context: ./ruby
+    entrypoint: /usr/src/ruby-entrypoint.sh
+    volumes:
+      - ./web:/web:cached
+      - ./ruby/bundle_cache:/bundle:cached
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    links:
+      - db
+    restart: always

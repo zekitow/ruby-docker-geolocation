@@ -1,0 +1,19 @@
+default: &default
+  host: db
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: ruby_geolocation
+  password: secret
+
+development:
+  <<: *default
+  database: ruby_geolocation_development
+
+test:
+  <<: *default
+  database: ruby_geolocation_test
+
+production:
+  <<: *default
+  database: ruby_geolocation_production

@@ -1,0 +1,20 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore all logfiles and tempfiles.
+/log/*
+!/log/.keep
+/tmp/*
+/ruby/bundle_cache/*
+/ruby/bundle_cache/.keep
+!/log/.keep
+!/tmp/.keep
+
+psql/data/*
+!psql/data/.keep
+/web/log/*
+!/web/log/.keep
+.byebug_history
+coverage
+.DS_Store
+tags

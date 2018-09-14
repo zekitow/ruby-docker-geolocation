@@ -12,11 +12,11 @@ gem 'sinatra', '~> 1.4'
 gem 'sinatra-contrib'
 gem 'sinatra-activerecord', '~> 2.0'
 gem 'json'
-gem 'rack-parser', :require => 'rack/parser'
+gem 'rack-parser', require: 'rack/parser'
 
-gem 'elasticsearch','6.0.2'
-gem 'elasticsearch-model'
-gem 'elasticsearch-persistence'
+gem 'elasticsearch', '6.0.2'
+gem 'elasticsearch-model', '5.0.0'
+gem 'elasticsearch-persistence', '5.0.0', require: 'elasticsearch/persistence/model'
 
 group :development, :test do
   gem 'byebug'

@@ -18,6 +18,7 @@ services:
       - ./elasticsearch/data/${ES_DATA_DIR}/:/usr/share/elasticsearch/data/${ES_DATA_DIR}
     ports:
       - "9200:9200"
+      - "9300:9300"
     restart: always
 
   db:
@@ -32,6 +33,10 @@ services:
       POSTGRES_DB: ruby_geolocation_${RACK_ENV}
       POSTGRES_USER: root
       POSTGRES_PASSWORD: secret
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
     restart: always
 
   ruby:
@@ -50,7 +55,9 @@ services:
     ports:
       - "3000:3000"
     depends_on:
+      - elasticsearch
       - db
     links:
+      - elasticsearch
       - db
     restart: always

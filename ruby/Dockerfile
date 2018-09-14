@@ -12,6 +12,5 @@ ENV BUNDLE_PATH=/bundle \
     GEM_HOME=/bundle
 ENV PATH="${BUNDLE_BIN}:${PATH}"
 
-COPY ssl /usr/src/ssl
 COPY ruby-entrypoint.sh /usr/src/
 RUN ["chmod", "+x", "/usr/src/ruby-entrypoint.sh"]

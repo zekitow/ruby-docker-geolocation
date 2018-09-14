@@ -27,6 +27,8 @@ describe Property, type: :model do
         property_type: "apartment",
         street: "Street address",
         house_number: "123",
+        zip_code: "18044-000",
+        city: "Sorocaba",
         lng: -23.506270,
         lat: -47.455630
       }
@@ -39,6 +41,8 @@ describe Property, type: :model do
       it_should_behave_like "model without required attribute", Property, "house_number"
       it_should_behave_like "model without required attribute", Property, "lng"
       it_should_behave_like "model without required attribute", Property, "lat"
+      it_should_behave_like "model without required attribute", Property, "zip_code"
+      it_should_behave_like "model without required attribute", Property, "city"
     end
 
     context 'with required attribute' do

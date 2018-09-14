@@ -2,6 +2,7 @@ require './config/loaders'
 
 $configs = YAML::load(File.read('./config/application.yml'))[$env.to_s]
 
+require './config/elasticsearch'
 require './config/require_all'
 require './config/database'
 require 'logger'

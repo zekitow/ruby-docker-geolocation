@@ -32,17 +32,17 @@ describe PropertyRepository, elasticsearch: true do
     subject { PropertyRepository.new.similar(request)   }
     let(:request) { Requests::Property::Get.new(params) }
 
-    before do
-      FactoryGirl.create(:property, :for_rent)
-      FactoryGirl.create(:property, :to_sell)
-      FactoryGirl.create(:property, :family_house)
-      FactoryGirl.create(:property, :apartment)
-      FactoryGirl.create(:property, :apartment)
-      FactoryGirl.create(:property, :apartment, :to_sell, lng: 13.4236807, lat: 52.5342963)
-      PropertyRepository.new.import_all!
-    end
-
     context 'when does not exists similar properties' do
+      before do
+        FactoryGirl.create(:property, :for_rent,     lat: -23.528753, lng: -47.467503) # beer caps (searching point)
+        FactoryGirl.create(:property, :to_sell,      lat: -23.527602, lng: -47.468614) # jack pub (200m)
+        FactoryGirl.create(:property, :family_house, lat: -23.494778, lng: -47.433332) # bardolino (4.95km)
+        FactoryGirl.create(:property, :apartment,    lat: -23.451540, lng: -47.441590) # roots espetinhos e cervejas (9.10km)
+        FactoryGirl.create(:property, :apartment,    lat: -23.505009, lng: -47.469043) # the crown pub (2.38km)
+        FactoryGirl.create(:property, :apartment, :to_sell, lng: 13.4236807, lat: 52.5342963)
+        PropertyRepository.new.import_all!
+      end
+
       let(:params) do
         {
           lng: 13.4236807,
@@ -56,6 +56,32 @@ describe PropertyRepository, elasticsearch: true do
     end
 
     context 'when exists similar properties' do
+      before do
+        FactoryGirl.create(:property, :for_rent,            zip_code: '001', lat: -23.528753, lng: -47.467503) # beer caps (searching point!)
+        FactoryGirl.create(:property, :to_sell,             zip_code: '002', lat: -23.527602, lng: -47.468614) # jack pub  (2km)
+        FactoryGirl.create(:property, :apartment,           zip_code: '003', lat: -23.567227, lng: -47.463075) # cervejaria bamberg (4.49km)
+        FactoryGirl.create(:property, :apartment,           zip_code: '004', lat: -23.505009, lng: -47.469043) # the crown pub (2.48km)
+        FactoryGirl.create(:property, :family_house,        zip_code: '005', lat: -23.494778, lng: -47.433332) # bardolino (5.12km)
+        FactoryGirl.create(:property, :apartment, :to_sell, zip_code: '006', lng: 13.4236807, lat: 52.5342963) # Berlin location
+        PropertyRepository.new.import_all!
+      end
+
+      let(:params) do
+        {
+          lng: -23.528753,
+          lat: -47.467503,
+          property_type: 'apartment',
+          marketing_type: 'sell'
+        }
+      end
+
+      it { expect(subject.count).to eq(4) }
+
+      it "should not include locations that aren't in 5km radius" do
+        zipcodes = subject.collect(&:zip_code)
+        expect(zipcodes).not_to include("005")
+        expect(zipcodes).not_to include("006")
+      end
     end
   end
 end

@@ -44,7 +44,9 @@ class PropertyRepository
   # into ElasticSearch 'properties' index
   def import_all!(options = { refresh: true })
     return if Property.count == 0
-    body = Property.all.collect(&:to_hash).map { |a| { index: { _id: a.delete('id'), data: a } } }
+    body = Property.all.collect(&:to_hash).map do |a|
+      { index: { _id: a.delete('id'), data: a } }
+    end
 
     request  = {
       index: self.index,

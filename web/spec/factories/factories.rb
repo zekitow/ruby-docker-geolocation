@@ -10,11 +10,11 @@ FactoryGirl.define do
     lat -47.455630
   end
 
-  trait :to_sell do
+  trait :sell do
     offer_type "sell"
   end
 
-  trait :for_rent do
+  trait :rent do
     offer_type "rent"
   end
 

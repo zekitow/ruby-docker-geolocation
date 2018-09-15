@@ -25,7 +25,10 @@ class PropertyRepository
     self.search({
       query: {
         bool: {
-          must: { match_all: {} },
+          must: [
+            { match: { offer_type: request.marketing_type } },
+            { match: { property_type: request.property_type } }
+          ],
           filter: {
             geo_distance: {
               distance: radius,
@@ -37,7 +40,7 @@ class PropertyRepository
           }
         }
       }
-    })
+    }, { search_type: :dfs_query_then_fetch })
   end
   
   # Import all data from Property model

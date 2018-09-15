@@ -51,7 +51,7 @@ RSpec.configure do | config |
     PropertyRepository.create_index!
   end
 
-  config.after :all, elasticsearch: true do
+  config.after :each, elasticsearch: true do
     $elastic_client.delete_by_query(index: '_all', body: { query: { match_all: {} } }, refresh: true)
   end
 end

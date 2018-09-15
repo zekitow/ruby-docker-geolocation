@@ -5,18 +5,53 @@ class PropertyRepository
   type  :property
   create_index!
 
+  mapping do
+    indexes :offer_type,        type: "text"
+    indexes :property_type,     type: "text"
+    indexes :zip_code,          type: "text"
+    indexes :city,              type: "text"
+    indexes :street,            type: "text"
+    indexes :house_number,      type: "text"
+    indexes :location,          type: "geo_point"
+    indexes :construction_year, type: "integer"
+    indexes :number_of_rooms,   type: "float"
+    indexes :currency,          type: "text"
+    indexes :price,             type: "float"
+  end
+
+  # Find similar properties based
+  # on request information
+  def similar(request, radius = "5km")
+    self.search({
+      query: {
+        bool: {
+          must: { match_all: {} },
+          filter: {
+            geo_distance: {
+              distance: radius,
+              location: {
+                lat: request.lat,
+                lon: request.lng
+              }
+            }
+          }
+        }
+      }
+    })
+  end
+  
   # Import all data from Property model
   # into ElasticSearch 'properties' index
   def import_all!(options = { refresh: true })
     return if Property.count == 0
-    body = Property.all.as_json.map { |a| { index: { _id: a.delete('id'), data: a } } }
+    body = Property.all.collect(&:to_hash).map { |a| { index: { _id: a.delete('id'), data: a } } }
 
     request  = {
       index: self.index,
       type:  self.type,
       body: body
     }.merge(options)
-
+    
     response = self.client.bulk(request)
     $logger.error("[BaseIndex] ===> Import error #{response}") if response['errors']
     response

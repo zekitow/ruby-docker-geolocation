@@ -71,7 +71,7 @@ describe Property, type: :model do
     it { expect(subject[:house_number]).to eq("123")        }
     it { expect(subject[:zip_code]).to eq("18044-000")      }
     it { expect(subject[:city]).to eq("Sorocaba")           }
-    it { expect(subject[:lng]).to eq(-23.506270)            }
-    it { expect(subject[:lat]).to eq(-47.455630)            }
+    it { expect(subject[:location][:lon]).to eq(-23.506270) }
+    it { expect(subject[:location][:lat]).to eq(-47.455630) }
   end
 end

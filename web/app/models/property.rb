@@ -1,4 +1,5 @@
 class Property < ActiveRecord::Base
+  attr_accessor :location
   enum offer_type:    { sell: 'sell', rent: 'rent' }
   enum property_type: { apartment: 'apartment', single_family_house: 'single_family_house' }
 
@@ -21,12 +22,14 @@ class Property < ActiveRecord::Base
       city: self.city,
       street: self.street,
       house_number: self.house_number,
-      lng: self.lng,
-      lat: self.lat,
       construction_year: self.construction_year,
       number_of_rooms: self.number_of_rooms,
       currency: self.currency,
-      price: self.price
+      price: self.price,
+      location: {
+        lon: self.lng,
+        lat: self.lat
+      }
     }
   end
 end

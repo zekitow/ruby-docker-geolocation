@@ -65,7 +65,7 @@ The url to access the application via browser is: [http://127.0.0.1:3000](http:/
 
 This API is responsible to filter persisted properties by some parameters and return all other properties in a 5km radius, along the address and their prices.
 
-| Param            | Description                                         |  Required | Type     |
+| Param            | Description                                         | Required  | Type     |
 |------------------|-----------------------------------------------------|-----------|----------|
 | lng              | Coordinate for Longitude                            | Yes       | Decimal  |
 | lat              | Coordinate for Latitude                             | Yes       | Decimal  |

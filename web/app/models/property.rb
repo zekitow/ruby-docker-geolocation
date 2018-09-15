@@ -1,6 +1,9 @@
 class Property < ActiveRecord::Base
-  validates :offer_type, presence: true
-  validates :property_type, presence: true
+  enum offer_type:    { sell: 'sell', rent: 'rent' }
+  enum property_type: { apartment: 'apartment', single_family_house: 'single_family_house' }
+
+  validates :offer_type, inclusion: { in: Property.offer_types }
+  validates :property_type, inclusion: { in: Property.property_types }
   validates :zip_code, presence: true
   validates :city, presence: true
   validates :street, presence: true

@@ -54,8 +54,8 @@ describe Property, type: :model do
     subject { Property.new(attributes).to_hash }
     let!(:attributes) do
       {
-        offer_type: "sell",
-        property_type: "apartment",
+        offer_type: Property.offer_types[:sell],
+        property_type: Property.property_types[:apartment],
         street: "Street address",
         house_number: "123",
         zip_code: "18044-000",

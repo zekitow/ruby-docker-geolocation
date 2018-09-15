@@ -45,6 +45,15 @@ RSpec.configure do | config |
 
   # Rspec output config
   config.formatter =  :documentation
+
+  config.before :all, elasticsearch: true do
+    $elastic_client.indices.delete(index: '_all')
+    PropertyRepository.create_index!
+  end
+
+  config.after :all, elasticsearch: true do
+    $elastic_client.delete_by_query(index: '_all', body: { query: { match_all: {} } }, refresh: true)
+  end
 end
 
 def start_profiling

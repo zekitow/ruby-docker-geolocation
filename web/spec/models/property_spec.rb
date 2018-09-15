@@ -48,7 +48,30 @@ describe Property, type: :model do
     context 'with required attribute' do
       it { should be true }
     end
-
   end
 
+  context '.to_hash' do
+    subject { Property.new(attributes).to_hash }
+    let!(:attributes) do
+      {
+        offer_type: "sell",
+        property_type: "apartment",
+        street: "Street address",
+        house_number: "123",
+        zip_code: "18044-000",
+        city: "Sorocaba",
+        lng: -23.506270,
+        lat: -47.455630
+      }
+    end
+
+    it { expect(subject[:offer_type]).to eq("sell")         }
+    it { expect(subject[:property_type]).to eq("apartment") }
+    it { expect(subject[:street]).to eq("Street address")   }
+    it { expect(subject[:house_number]).to eq("123")        }
+    it { expect(subject[:zip_code]).to eq("18044-000")      }
+    it { expect(subject[:city]).to eq("Sorocaba")           }
+    it { expect(subject[:lng]).to eq(-23.506270)            }
+    it { expect(subject[:lat]).to eq(-47.455630)            }
+  end
 end

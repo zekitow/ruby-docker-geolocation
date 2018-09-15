@@ -8,30 +8,22 @@ class Property < ActiveRecord::Base
   validates :lng, presence: true
   validates :lat, presence: true
 
+  # This method is used by
+  # ElasticSearch for indexing data
   def to_hash
     {
-      offer_type: offer_type,
-      property_type: property_type,
-      zip_code: zip_code,
-      city: city,
-      street: street,
-      house_number: house_number,
-      lng: lng,
-      lat: lat,
-      construction_year: construction_year,
-      number_of_rooms: number_of_rooms,
-      currency: currency,
-      price: price,
-      created_at: created_at,
-      updated_at: updated_at
+      offer_type: self.offer_type,
+      property_type: self.property_type,
+      zip_code: self.zip_code,
+      city: self.city,
+      street: self.street,
+      house_number: self.house_number,
+      lng: self.lng,
+      lat: self.lat,
+      construction_year: self.construction_year,
+      number_of_rooms: self.number_of_rooms,
+      currency: self.currency,
+      price: self.price
     }
   end
-end
-
-class Repo
-  include Elasticsearch::Persistence::Repository
-  client Elasticsearch::Client.new(url: $elastic_host, log: false)
-  index :properties
-  type  :property
-  create_index!
 end

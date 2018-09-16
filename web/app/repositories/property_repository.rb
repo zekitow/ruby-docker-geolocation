@@ -40,13 +40,14 @@ class PropertyRepository
           }
         }
       }
-    }, { search_type: :dfs_query_then_fetch })
+    },{ search_type: :dfs_query_then_fetch })
   end
   
   # Import all data from Property model
   # into ElasticSearch 'properties' index
   def import_all!(options = { refresh: true })
     return if Property.count == 0
+
     body = Property.all.collect(&:to_hash).map do |a|
       { index: { _id: a.delete('id'), data: a } }
     end
@@ -56,9 +57,7 @@ class PropertyRepository
       type:  self.type,
       body: body
     }.merge(options)
-    
-    response = self.client.bulk(request)
-    $logger.error("[BaseIndex] ===> Import error #{response}") if response['errors']
-    response
+
+    self.client.bulk(request)
   end
 end

@@ -34,8 +34,8 @@ describe PropertyRepository, elasticsearch: true do
 
     context 'when does not exists similar properties' do
       before do
-        FactoryGirl.create(:property, :rent,     lat: -23.528753, lng: -47.467503) # beer caps (searching point)
-        FactoryGirl.create(:property, :sell,      lat: -23.527602, lng: -47.468614) # jack pub (200m)
+        FactoryGirl.create(:property, :rent,         lat: -23.528753, lng: -47.467503) # beer caps (searching point)
+        FactoryGirl.create(:property, :sell,         lat: -23.527602, lng: -47.468614) # jack pub (200m)
         FactoryGirl.create(:property, :family_house, lat: -23.494778, lng: -47.433332) # bardolino (4.95km)
         FactoryGirl.create(:property, :apartment,    lat: -23.451540, lng: -47.441590) # roots espetinhos e cervejas (9.10km)
         FactoryGirl.create(:property, :apartment,    lat: -23.505009, lng: -47.469043) # the crown pub (2.38km)
@@ -57,42 +57,47 @@ describe PropertyRepository, elasticsearch: true do
 
     context 'when exists similar properties' do
       before do
-        FactoryGirl.create(:property, :family_house, :rent, zip_code: '001', lat: -23.528753, lng: -47.467503) # beer caps (searching point!)
-        FactoryGirl.create(:property, :apartment,    :sell, zip_code: '002', lat: -23.527602, lng: -47.468614) # jack pub  (2km)
-        FactoryGirl.create(:property, :apartment,    :sell, zip_code: '003', lat: -23.567227, lng: -47.463075) # cervejaria bamberg (4.49km)
-        FactoryGirl.create(:property, :apartment,    :rent, zip_code: '004', lat: -23.505009, lng: -47.469043) # the crown pub (2.48km)
-        FactoryGirl.create(:property, :family_house, :rent, zip_code: '005', lat: -23.494778, lng: -47.433332) # bardolino (5.12km)
+        
+        FactoryGirl.create(:property, :family_house, :rent, zip_code: '001', lng: -23.528874, lat: -47.466840) # beer caps (searching point!)
+        FactoryGirl.create(:property, :apartment,    :sell, zip_code: '002', lng: -23.527678, lat: -47.468569) # jack pub  (2km)
+        FactoryGirl.create(:property, :apartment,    :sell, zip_code: '003', lng: -23.568083, lat: -47.459705) # cervejaria bamberg (4.49km)
+        FactoryGirl.create(:property, :apartment,    :rent, zip_code: '004', lng: -23.505449, lat: -47.470245) # the crown pub (2.48km)
+        FactoryGirl.create(:property, :family_house, :rent, zip_code: '005', lng: -23.495320, lat: -47.435167) # bardolino (5.12km)
         FactoryGirl.create(:property, :apartment,    :sell, zip_code: '006', lng: 13.4236807, lat: 52.5342963) # Berlin location
         PropertyRepository.new.import_all!
       end
 
       let(:params) do
         {
-          lng: -23.528753,
-          lat: -47.467503,
+          lng: -23.528874,
+          lat: -47.466840,
           property_type: 'apartment',
           marketing_type: 'sell'
         }
       end
 
+      it "should return the matched results" do
+        expect(subject.results.count).to eq(2)
+      end
+
       it "should include locations in 5km radius" do
-        zipcodes = subject.collect(&:zip_code)
-        expect(zipcodes).not_to include("002")
-        expect(zipcodes).not_to include("003")
+        zipcodes = subject.results.collect(&:zip_code)
+        expect(zipcodes).to include("002")
+        expect(zipcodes).to include("003")
       end
 
       it "should not include near family houses" do
-        zipcodes = subject.collect(&:zip_code)
+        zipcodes = subject.results.collect(&:zip_code)
         expect(zipcodes).not_to include("001")
       end
 
       it "should not include near properties for rent" do
-        zipcodes = subject.collect(&:zip_code)
+        zipcodes = subject.results.collect(&:zip_code)
         expect(zipcodes).not_to include("004")
       end
 
       it "should not include locations that are not in 5km radius" do
-        zipcodes = subject.collect(&:zip_code)
+        zipcodes = subject.results.collect(&:zip_code)
         expect(zipcodes).not_to include("005")
         expect(zipcodes).not_to include("006")
       end

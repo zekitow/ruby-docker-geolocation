@@ -25,5 +25,14 @@ class App < Sinatra::Base
   use HomeController
   use API::PropertyController
 
+
+  if settings.environment != 'production'
+    # just for local testing, it will
+    # create the index everytime
+    $elastic_client.indices.delete(index: '_all')
+    PropertyRepository.create_index!
+    PropertyRepository.new.import_all!
+  end
+
   run! if app_file == $0
 end

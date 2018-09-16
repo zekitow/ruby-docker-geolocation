@@ -76,7 +76,7 @@ This API is responsible to filter persisted properties by some parameters and re
 ### Curl Example
 
 ```sh
-curl -v http://127.0.0.1:3000/properties?lng=13.4236807&lat=52.5342963&property_type=apartment&marketing_type=sell
+curl -v http://127.0.0.1:3000/api/properties?lng=13.4236807&lat=52.5342963&property_type=apartment&marketing_type=sell
 ```
 
 Expected return:
@@ -108,4 +108,19 @@ Expected return:
 
   }
 ]
+```
+
+#### Useful notes
+
+Access of PG console:
+
+```
+docker exec -ti rubydockergeolocation_db_1 psql -Uruby_geolocation -d ruby_geolocation_test
+```
+
+Access of IRB console:
+
+```
+cd web
+docker exec -ti rubydockergeolocation_ruby_1 bundle exec irb -r ./app.rb 
 ```

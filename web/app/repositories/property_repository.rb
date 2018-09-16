@@ -23,6 +23,7 @@ class PropertyRepository
   # on request information
   def similar(request, radius = "5km")
     self.search({
+      from: 0, size: 10000,
       query: {
         bool: {
           must: [

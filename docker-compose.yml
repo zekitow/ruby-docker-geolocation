@@ -28,7 +28,7 @@ services:
     build:
       context: ./psql
     volumes:
-      - ./psql/data:/var/lib/postgresql
+      - ./psql/data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ruby_geolocation_${RACK_ENV}
       POSTGRES_USER: root

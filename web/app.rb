@@ -23,7 +23,7 @@ class App < Sinatra::Base
   }
 
   use HomeController
-  use API::ExampleController
+  use API::PropertyController
 
   run! if app_file == $0
 end

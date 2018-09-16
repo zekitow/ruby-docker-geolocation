@@ -34,12 +34,12 @@ describe PropertyRepository, elasticsearch: true do
 
     context 'when does not exists similar properties' do
       before do
-        FactoryGirl.create(:property, :rent,         lat: -23.528753, lng: -47.467503) # beer caps (searching point)
-        FactoryGirl.create(:property, :sell,         lat: -23.527602, lng: -47.468614) # jack pub (200m)
-        FactoryGirl.create(:property, :family_house, lat: -23.494778, lng: -47.433332) # bardolino (4.95km)
-        FactoryGirl.create(:property, :apartment,    lat: -23.451540, lng: -47.441590) # roots espetinhos e cervejas (9.10km)
-        FactoryGirl.create(:property, :apartment,    lat: -23.505009, lng: -47.469043) # the crown pub (2.38km)
-        FactoryGirl.create(:property, :apartment, :sell, lng: 13.4236807, lat: 52.5342963)
+        FactoryGirl.create(:property, :family_house, :rent, zip_code: '001', lng: -23.528874, lat: -47.466840) # beer caps (searching point!)
+        FactoryGirl.create(:property, :apartment,    :sell, zip_code: '002', lng: -23.527678, lat: -47.468569) # jack pub  (2km)
+        FactoryGirl.create(:property, :apartment,    :sell, zip_code: '003', lng: -23.568083, lat: -47.459705) # cervejaria bamberg (4.49km)
+        FactoryGirl.create(:property, :apartment,    :rent, zip_code: '004', lng: -23.505449, lat: -47.470245) # the crown pub (2.48km)
+        FactoryGirl.create(:property, :family_house, :rent, zip_code: '005', lng: -23.495320, lat: -47.435167) # bardolino (5.12km)
+        FactoryGirl.create(:property, :apartment,    :sell, zip_code: '006', lng: 13.4236807, lat: 52.5342963) # Berlin location
         PropertyRepository.new.import_all!
       end
 
@@ -57,7 +57,6 @@ describe PropertyRepository, elasticsearch: true do
 
     context 'when exists similar properties' do
       before do
-        
         FactoryGirl.create(:property, :family_house, :rent, zip_code: '001', lng: -23.528874, lat: -47.466840) # beer caps (searching point!)
         FactoryGirl.create(:property, :apartment,    :sell, zip_code: '002', lng: -23.527678, lat: -47.468569) # jack pub  (2km)
         FactoryGirl.create(:property, :apartment,    :sell, zip_code: '003', lng: -23.568083, lat: -47.459705) # cervejaria bamberg (4.49km)

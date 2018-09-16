@@ -40,7 +40,7 @@ class PropertyRepository
           }
         }
       }
-    },{ search_type: :dfs_query_then_fetch })
+    })
   end
   
   # Import all data from Property model

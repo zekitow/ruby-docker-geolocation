@@ -24,7 +24,8 @@ sudo sysctl -w vm.max_map_count=262144
 1. Clone this repository
 2. Build docker by running **docker-compose build** on terminal
 3. Start docker in *test environment* using the command: **export RACK_ENV=test && docker-compose up && docker-compose logs -f**
-4. Execute the tests using the command **docker exec -ti rubydockergeolocation_ruby_1 rspec**
+4. Create the index by running the rake task **bundle exec rake index:rebuild**
+5. Execute the tests using the command **docker exec -ti rubydockergeolocation_ruby_1 rspec**
 
 To make the setup easier to run:
 
@@ -38,6 +39,9 @@ docker-compose build
 
 # Launch docker in test env
 export RACK_ENV=test && docker-compose up && docker-compose logs -f
+
+# Create the index and load the data
+docker exec -ti rubydockergeolocation_ruby_1 bundle exec rake index:rebuild
 
 # On a new tab execute rspec tests
 docker exec -ti rubydockergeolocation_ruby_1 rspec

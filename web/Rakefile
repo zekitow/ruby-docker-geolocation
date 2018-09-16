@@ -1,6 +1,18 @@
 require 'sinatra/activerecord'
 require 'sinatra/activerecord/rake'
 
+namespace :index do
+  desc "Create the ElasticSearch index and import all data (should run after insert data into 'properties table')"
+  task :rebuild do
+    require './app'
+    puts "Creating index.."
+    $elastic_client.indices.delete(index: '_all')
+    PropertyRepository.create_index!
+    PropertyRepository.new.import_all!
+    puts "Done."
+  end
+end
+
 namespace :db do
   task :load_config do
     require './app'

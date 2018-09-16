@@ -116,6 +116,10 @@ Expected return:
 
 #### Useful notes
 
+Exists a issue using docker and OS X which makes everything runs too slow. The problem is related to file system integration between docker and mac, so, I do recommend you to use Linux.
+
+[See the issue](https://github.com/docker/for-mac/issues/2659)
+
 Access of PG console:
 
 ```

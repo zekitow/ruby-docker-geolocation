@@ -13,7 +13,7 @@ class ApplicationController < Sinatra::Base
   end
 
   #
-  # Captura todos os erros do tipo 400 e retorna.
+  # Captures all errors 400 and returns.
   #
   error BadRequestError do
     $logger.error("Internal server error: #{env['sinatra.error']}")
@@ -40,7 +40,7 @@ class ApplicationController < Sinatra::Base
   private 
 
     #
-    # Retorna um json de erro, contendo o status http informado.
+    # Returns an error json, containing the http status reported.
     #
     def halt_with(status, message)
       halt status, { 'Content-Type' => 'application/json'},
@@ -48,7 +48,7 @@ class ApplicationController < Sinatra::Base
     end
 
     #
-    # Retorna um json de erro, contendo o status http informado.
+    # Returns an error json, containing the http status reported.
     #
     def halt_data(status, data)
       halt status, { 'Content-Type' => 'application/json'}, data.to_json

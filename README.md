@@ -1,5 +1,7 @@
 # Ruby Geolocation
 
+Sample app that to perform search a by radius using the elastic search geolocation feature.
+
 ## Pre-Setup
 
 **Important**
@@ -21,33 +23,31 @@ sudo sysctl -w vm.max_map_count=262144
 
 ## Setup
 
-1. Clone this repository
-2. Build docker by running **docker-compose build** on terminal
-3. Start docker in *test environment* using the command: **export RACK_ENV=test && docker-compose up && docker-compose logs -f**
-4. Create the index by running the rake task **bundle exec rake index:rebuild**
-5. Execute the tests using the command **docker exec -ti rubydockergeolocation_ruby_1 rspec**
+1. Build the docker containers
 
-To make the setup easier to run:
-
-```sh
-# Clone the repository
-git clone git@github.com:zekitow/ruby-docker-geolocation.git ruby-docker-geolocation
-cd ruby-docker-geolocation
-
-# Build the docker (only needed for the first run)
-docker-compose build
-
-# Launch docker in test env
-export RACK_ENV=test && docker-compose up && docker-compose logs -f
-
-# Create the index and load the data
-docker exec -ti rubydockergeolocation_ruby_1 bundle exec rake index:rebuild
-
-# On a new tab execute rspec tests
-docker exec -ti rubydockergeolocation_ruby_1 rspec
+```bash
+make build
 ```
 
-If everthing works fine, you should see the output similar to this:
+2. Run all containers
+```bash
+make test.up
+```
+
+3. Using another terminal session, access bash of the ruby machine and prepare the database and elasticsearch.
+```bash
+make ruby.bash
+bundle exec rake db:migrate
+bundle exec rake db:seed
+bundle exec rake index:rebuild
+```
+
+4. Run the tests
+```bash
+make test.run
+```
+
+Then you should see the output similar to this:
 
 ```sh
 HomeController
@@ -89,9 +89,9 @@ Expected return:
 [
   {
 
-    "house_number" : "31", 
-    "street" : "Marienburger Straße", 
-    "city" : "Berlin", 
+    "house_number" : "31",
+    "street" : "Marienburger Straße",
+    "city" : "Berlin",
     "zip_code" : "10405",
     "state" : "Berlin",
     "lat" : "13.4211476",
@@ -101,9 +101,9 @@ Expected return:
   },
   {
 
-    "house_number" : "16", 
-    "street" : "Winsstraße", 
-    "city" : "Berlin", 
+    "house_number" : "16",
+    "street" : "Winsstraße",
+    "city" : "Berlin",
     "zip_code" : "10405",
     "state" : "Berlin",
     "lat" : "52.533533",
@@ -116,19 +116,19 @@ Expected return:
 
 #### Useful notes
 
-Exists a issue using docker and OS X which makes everything runs too slow. The problem is related to file system integration between docker and mac, so, I do recommend you to use Linux.
-
-[See the issue](https://github.com/docker/for-mac/issues/2659)
-
 Access of PG console:
-
 ```
-docker exec -ti rubydockergeolocation_db_1 psql -Uruby_geolocation -d ruby_geolocation_test
+make db.bash
+psql -Uruby_geolocation -d ruby_geolocation_test
 ```
 
 Access of IRB console:
-
 ```
-cd web
-docker exec -ti rubydockergeolocation_ruby_1 bundle exec irb -r ./app.rb 
+make ruby.bash
+bundle exec irb -r ./app.rb
+```
+
+Stop all containers:
+```
+make down
 ```
